@@ -1,4 +1,15 @@
-class Elevator():
+from collections import OrderedDict
+from threading import Thread
+
+def def_call_priority(e,c):
+    """
+    c- call\n
+    represents the default priority function
+    list of calls
+    """
+    return 0
+
+class Elevator(Thread):
     """
     Single elevator object
 
@@ -7,37 +18,29 @@ class Elevator():
     call_buttons
     queue
     """
-    n = 0
-    def __init__(self, floor=0, direction=None, bank=None):
+    
+    def __init__(self, prioritize=def_call_priority,floors=[], floor=0, direc=None, bank=None):
+        Thread.__init__(self)
         self.call_queue = []
         self.floor = floor
-        self.direction = direction
-        self.bank = bank
-        self.calls = []
-        if self.bank:
-            self.call_priority = self.bank.call_priority
-        else:
-            self.call_priority = def_call_priority
-
-
-
+        self.direc = direc
+        self.prioritize = prioritize
+        self.running = True
+        
     def __str__(self):
-        s = "Elevator({} @ {})\n\tCall Queue:\n\t\t".format(self.direction,self.floor)
+        s = "Elevator({} @ {})".format(self.direc,self.floor)
 
-        s += '\n\t\t'.join([str(c) for c in self.call_queue ])
+        # s += '\n\t\t'.join([str(c) for c in self.call_queue ])
 
         return s
 
+    def add_call(self,call):
+        self.call_queue.append(call)
 
-    def prioritize(self):
-        self.queue.sort(key=self.call_priority)
+    def answer_call(self):
+        self.call_queue.sort(key=self.prioritize)
+        return self.call_queue.pop()
 
-    def add_call(self,floor):
-        self.calls.append(Call(floor))
-
-    def update_queue(self):
-        q = self.bank.calls + self.calls
-
-        q.sort(key = self.call_priority)
-
-        self.call_queue = q
+    def run(self):
+        while self.running:
+            print('running\n',end='')

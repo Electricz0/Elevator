@@ -1,5 +1,6 @@
 import threading
 import program
+import heapq
 
 class Bank():
     """
@@ -7,14 +8,14 @@ class Bank():
 
     can contain banks or elevators
     has a queue of calls made for elevators in the bank
-    orders the queue with the call_priority function
+    
     """
 
     elevators = []
 
     def __init__(self, call_priority=program.def_call_priority):
         # call queue (should be a priority queue)
-        self.call_queue = []
+        self.call_queue = heapq
 
         # lock for the queue (only one access at a time to prevent conflicts)
         self.queue_lock = threading.RLock()
@@ -43,8 +44,11 @@ class Bank():
         elev.bank = self
         self.elevators.append(elev)
     
-    def add_call(self,call):
-        self.calls.append(call)
+    def make_call(self,call):
+        """
+        add call to priority queue
+        """
+        self.call_queue.append(call)
     
     def update(self):
         for e in self:
