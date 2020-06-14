@@ -7,18 +7,14 @@ def def_call_priority(e,c):
     represents the default priority function
     list of calls
     """
+    
     return 0
 
 class Elevator(Thread):
     """
     Single elevator object
-
-    location
-    direction
-    call_buttons
-    queue
     """
-    
+
     def __init__(self, prioritize=def_call_priority,floors=[], floor=0, direc=None, bank=None):
         Thread.__init__(self)
         self.call_queue = []

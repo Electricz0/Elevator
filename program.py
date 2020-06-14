@@ -46,9 +46,9 @@ import call_button
 
 def main():
 
-    floors = []
+    floors = {}
     for i in range(5):
-        floors.append(str(i))
+        floors[str(i)] = i
 
     elev = elevator.Elevator()
 
@@ -56,7 +56,7 @@ def main():
     btns.update({"D,{}".format(str(f)) : call_button.CallButton(f,elev,'D') for f in floors})
 
     for k,v in btns.items():
-        print("'{}':{}\n".format(k, str(v)), end='')
+        # print("'{}':{}\n".format(k, str(v)), end='')
         v.press()
 
     print(elev.call_queue)
