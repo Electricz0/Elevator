@@ -8,6 +8,7 @@ how do i want to represent the prioritization of calls?
     they can either have their own or inherit from their containing bank
     either it will call its own key function or it will 
 """
+from direction import Direction
 
 class Call():
     """
@@ -20,7 +21,7 @@ class Call():
             self.floor = button.floor
             self.elev = button.elev
         else:
-            self.dir = direc
+            self.direc = direc
             self.floor = floor
             self.elev = elev
 

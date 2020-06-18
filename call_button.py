@@ -16,4 +16,4 @@ class CallButton:
         self.elev.add_call(call.Call(button=self))
 
     def __str__(self):
-        return "CallButton({},{})".format(self.direc,str(self.elev))
+        return "CallButton({} @ {} for {})".format(self.direc,self.floor, str(self.elev))

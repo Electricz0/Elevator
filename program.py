@@ -43,21 +43,31 @@ how to determine buttons:
 
 import elevator
 import call_button
+from call import Call
+import time
+from direction import Direction
 
 def main():
 
-    floors = {}
-    for i in range(5):
-        floors[str(i)] = i
+    # lists of floors must be ordered from lowest to highest floor
+    # names must be unique
+    floors = ('SB','B','L','2','3','4','5','6','7','8','9','10')
 
-    elev = elevator.Elevator()
+    # print(floors)
 
-    btns = { "U,{}".format(str(f)) : call_button.CallButton(f,elev,'U') for f in floors}
-    btns.update({"D,{}".format(str(f)) : call_button.CallButton(f,elev,'D') for f in floors})
+    elev = elevator.Elevator(floors,floor="9")
 
-    for k,v in btns.items():
-        # print("'{}':{}\n".format(k, str(v)), end='')
-        v.press()
+    btns = { "{},U".format(str(f)) : call_button.CallButton( f, elev, Direction.UP ) for f in floors}
+    btns.update({"{},D".format(str(f)) : call_button.CallButton(f, elev, Direction.DOWN) for f in floors})
 
-    print(elev.call_queue)
+    actions = ["3,D","2,D","6,U","2,U"]
+
+    for b in actions:
+        btns[b].press()
+
+    print(elev)
+    elev.prioritize()
+    print(elev)
+
+    elev.start()
 main()
