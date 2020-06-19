@@ -10,7 +10,7 @@ import operator
 import math
 import call
 from direction import Direction
-from call_button import CallButton
+from button import CallButton, ElevatorButton
 
 def def_call_priority(e,c):
     """
@@ -70,7 +70,7 @@ class Elevator(Thread):
         if len(self.floors) == 0:
             raise(Exception())
 
-        self.buttons = [CallButton(f.floor, self) for f in floors]
+        self.buttons = [ElevatorButton(f, self) for f in floors]
 
         # if the starting floor is not defined, start at the lowest floor
         self.floor = floor

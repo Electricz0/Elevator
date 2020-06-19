@@ -46,7 +46,7 @@ how to determine buttons:
 """
 
 import elevator
-import call_button
+import button
 from call import Call
 import time
 from direction import Direction
@@ -61,8 +61,8 @@ def main():
 
     elev = elevator.Elevator(floors,floor="9")
 
-    btns = { "{},U".format(str(f)) : call_button.CallButton( f, elev, direc=Direction.UP ) for f in floors}
-    btns.update({"{},D".format(str(f)) : call_button.CallButton(f, elev, direc=Direction.DOWN) for f in floors})
+    btns = { "{},U".format(str(f)) : button.CallButton( f, elev, direc=Direction.UP ) for f in floors}
+    btns.update({"{},D".format(str(f)) : button.CallButton(f, elev, direc=Direction.DOWN) for f in floors})
 
     actions = ["3,D","2,D","6,U","2,U"]
 

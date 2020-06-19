@@ -7,7 +7,7 @@ import call
 class Button():
     def __init__(self,floor,elev):
         self.floor = floor
-        self.eleve = elev
+        self.elev = elev
     
     def press(self):
         self.elev.add_call(call.Call(button=self))
