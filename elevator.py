@@ -1,3 +1,9 @@
+"""
+elevator.py
+
+Defines elevator class and default behavior
+"""
+
 from threading import Thread
 import time
 import operator
@@ -7,20 +13,38 @@ from direction import Direction
 
 def def_call_priority(e,c):
     """
-    c- call\n
+    e - elevator
+    c - call\n
     represents the default priority function
-    list of calls
     """
-    if e.direc != None:
-        if e.direc != c.direc:
-            # if the call is not going in the
-            # same direction as the elevator
-            # deprioritize it
-            return math.inf
-    # determine distance to appropriate calls
+    
+    # determine locations of call and elevator
     loc_e = e.floors.index(e.floor)
     loc_c = e.floors.index(c.floor)
-    return abs(loc_e - loc_c)
+
+    # print("E at {} ord {}\n".format(e.floor,loc_e), end="")
+    # print("C at {} ord {}\n".format(c.floor,loc_c), end="")
+
+    # on the way means:
+    # floor is in the path of the elevator
+    # call is for the same direction the elevator is travelling
+
+    # floor is on the way up
+    otwu = e.direc == Direction.UP and loc_c >= loc_e and e.direc == c.direc
+
+    # floor is on the way down
+    otwd = e.direc == Direction.DOWN and loc_c <= loc_e and e.direc == c.direc
+
+    # if direction is not set
+    # or floor is on the way up or down
+    if e.direc == None or otwu or otwd:
+        # set priority based on distance to floor
+        return abs(loc_e - loc_c)
+
+    # print('lp')
+
+    # otherwise, set lowest priority
+    return math.inf
 
 
 class Elevator(Thread):
@@ -32,21 +56,20 @@ class Elevator(Thread):
         Thread.__init__(self)
         
         self.call_queue = []
-
         self.direc = direc
         self.priority = priority
         self.running = True
         self.task = None
 
-        
         # floors should be defined as a tuple of strings
         # every string should be unique and ordered correctly from
         # lowest floor to highest floor
-        
+        # floors must contain at least one floor
         self.floors = floors
         if len(self.floors) == 0:
             raise(Exception())
 
+        # if the starting floor is not defined, start at the lowest floor
         self.floor = floor
         if self.floor == None:
             self.floor = self.floors[0]
@@ -62,10 +85,6 @@ class Elevator(Thread):
     def add_call(self,call):
         self.call_queue.append(call)
 
-    def answer_call(self):
-        self.call_queue.sort(key=self.prioritize)
-        return self.call_queue.pop()
-
     def queue_to_list(self):
         return [str(c) for c in self.call_queue]
 
@@ -77,26 +96,22 @@ class Elevator(Thread):
         # temp behavior
         # run until queue is exhausted
         while len(self.call_queue) > 0:
+            print(self)
 
-            print(self.queue_to_list())
+            # print(self.queue_to_list())
 
             # sort queue based on defined priorities
             self.prioritize()
-            print(self.queue_to_list())
+            # print(self.queue_to_list())
 
             # pop task off of the front of queue
             self.task = self.call_queue.pop(0)
 
-            # determine direction of travel
-            if self.direc == None:
-                loc_c = self.floors.index(self.task.floor)
-                loc_e = self.floors.index(self.floor)
-                if loc_c > loc_e:
-                    self.direc = Direction.UP
-                else:
-                    self.direc = Direction.DOWN
-
-            print("New task: go to {}".format(self.task.floor))
+            # set direction of travel
+            # if task is on the way
+            # 
+            self.direc = self.task.direc
+            
 
             # wait a second (minimize spaming queue)
-            time.sleep(1)
+            # time.sleep(1)

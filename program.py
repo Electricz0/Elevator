@@ -1,4 +1,8 @@
 """
+program.py
+
+Main program file
+
 Possible names?
 PyLift
 LiftLib
@@ -64,10 +68,6 @@ def main():
 
     for b in actions:
         btns[b].press()
-
-    print(elev)
-    elev.prioritize()
-    print(elev)
 
     elev.start()
 main()
