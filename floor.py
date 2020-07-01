@@ -1,6 +1,19 @@
 """
-Floor class
+define Floor class and assiciated enumerators for beahvior
 """
 
 class Floor():
-    pass
+    """
+    floor class
+    """
+
+
+    def __init__(self,name,priority=None):
+        """
+        name
+        priority
+        accessiblity
+        """
+        
+        self.name = name
+        self.priority = priority

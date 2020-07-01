@@ -14,9 +14,11 @@ from button import CallButton, ElevatorButton
 
 def def_call_priority(e,c):
     """
-    e - elevator
+    e - elevator\n
     c - call\n
     represents the default priority function
+
+
     """
     
     # determine locations of call and elevator
@@ -47,20 +49,33 @@ def def_call_priority(e,c):
     # otherwise, set lowest priority
     return math.inf
 
-
 class Elevator(Thread):
     """
     Single elevator object
+
+    is a separately running thread
     """
 
     def __init__(self, floors, priority=def_call_priority, floor=None, direc=None):
+        """
+        floors - list of accessible floors\n
+        priority - call priority function\n
+        floor - starting floor (would normally get this from physical elevator sensors)\n
+        direc - starting direction\n
+        """
+        # initialize thread
         Thread.__init__(self)
 
-        self.call_queue = []
+        # set basic parameters
+        self.call_queue = [] # initialize call queue
         self.direc = direc
         self.priority = priority
         self.running = True
         self.task = None
+
+        # create lock for activity
+        # if locked, elevator should stop running
+        
 
         # floors should be defined as a tuple of strings
         # every string should be unique and ordered correctly from
@@ -78,6 +93,16 @@ class Elevator(Thread):
             self.floor = self.floors[0]
     
     def prioritize(self):
+        """
+        try using decorator pattern to dynamically change prioritizing behavior on the fly?
+
+        sort by distance
+        move all floors out of range to the end
+        if direction specified
+        move all floors out of the way to the end
+        move all calls in the opposite direciton to the end
+
+        """
         self.call_queue.sort(key=lambda c: self.priority(self,c))
 
     def __str__(self):

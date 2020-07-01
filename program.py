@@ -12,10 +12,10 @@ Lev8r
 
 
 lift/elevator should know what?
-    what buttons have been pressed?
+    * what buttons have been pressed?
     are the doors open?
-    what floor/level is it on?
-    what direction is it moving?
+    v what floor/level is it on?
+    v what direction is it moving?
     is it on or off (general state)?
 
 one bank of lifts should share behavior?
@@ -23,10 +23,10 @@ one bank of lifts should share behavior?
     one bank of elevators should share a queue of elevator calls
 
 
-floor
-    up and down buttons?
-    method calls will trigger buttons
-    send button push calls to corresponding bank of elevators
+buttons
+    v up and down buttons?
+    v method calls will trigger buttons
+    v send button push calls to corresponding elevators
 
 call object (floor)
     floor id
@@ -59,10 +59,10 @@ def main():
 
     # print(floors)
 
-    elev = elevator.Elevator(floors,floor="9")
+    elev = elevator.Elevator(floors,floor="L")
 
-    btns = { "{},U".format(str(f)) : button.CallButton( f, elev, direc=Direction.UP ) for f in floors}
-    btns.update({"{},D".format(str(f)) : button.CallButton(f, elev, direc=Direction.DOWN) for f in floors})
+    btns = { f + ",U" : button.CallButton( f, elev, direc=Direction.UP ) for f in floors }
+    btns.update({ f + ",D" : button.CallButton(f, elev, direc=Direction.DOWN) for f in floors })
 
     actions = ["3,D","2,D","6,U","2,U"]
 
